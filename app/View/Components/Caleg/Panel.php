@@ -3,6 +3,7 @@
 namespace App\View\Components\Caleg;
 
 use App\Models\DaftarPemilih;
+use App\Models\Kelurahan;
 use App\Models\PemungutanSuara;
 use App\Models\RukunTetangga;
 use Closure;
@@ -17,7 +18,7 @@ class Panel extends Component
     {
         $this->daftarPemilih = DaftarPemilih::where('is_calon', true)->count();
         $this->totalDPT = DaftarPemilih::count();
-        $this->target = RukunTetangga::sum('target_pemilih');
+        $this->target = Kelurahan::sum('target_pemilih');
         $this->suaraTPS = PemungutanSuara::sum('jumlah_suara');
     }
 

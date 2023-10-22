@@ -23,6 +23,14 @@
                     </li>
                     <li>
                         <div class="flex items-center">
+                            <input id="Kabupaten" type="radio" value="KABUPATEN" wire:model="jenjang"
+                                class="text-utama focus:ring-utama dark:focus:ring-utama h-4 w-4 border-gray-300 bg-gray-100 focus:ring-2 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700">
+                            <label for="Kabupaten"
+                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kabupaten</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
                             <input id="Kecamatan" type="radio" value="KECAMATAN" wire:model="jenjang"
                                 class="text-utama focus:ring-utama dark:focus:ring-utama h-4 w-4 border-gray-300 bg-gray-100 focus:ring-2 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700">
                             <label for="Kecamatan"
@@ -35,14 +43,6 @@
                                 class="text-utama focus:ring-utama dark:focus:ring-utama h-4 w-4 border-gray-300 bg-gray-100 focus:ring-2 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700">
                             <label for="Kelurahan"
                                 class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kelurahan</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <input id="RT" type="radio" value="RT" wire:model="jenjang"
-                                class="text-utama focus:ring-utama dark:focus:ring-utama h-4 w-4 border-gray-300 bg-gray-100 focus:ring-2 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700">
-                            <label for="RT"
-                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Rukun Tetangga</label>
                         </div>
                     </li>
                 </ul>
@@ -72,8 +72,8 @@
 
 
     <!-- LIST DATA COMPONENT -->
-    <div class="mt-3 rounded-xl bg-white p-3 shadow-lg">
-        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+    <div class="mt-8">
+        <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
             @foreach ($relawans as $relawan)
                 <li class="pb-3 sm:pb-4">
                     <div class="flex items-center space-x-4">

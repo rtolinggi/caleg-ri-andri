@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\KelurahanResource\RelationManagers;
+namespace App\Filament\Resources\KabupatenResource\RelationManagers;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
-use App\Models\RukunTetangga;
+use App\Models\Kelurahan;
 use Closure;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -13,15 +13,15 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RukunTetanggasRelationManager extends RelationManager
+class KelurahansRelationManager extends RelationManager
 {
-    protected static string $relationship = 'rukun_tetanggas';
+    protected static string $relationship = 'kelurahans';
 
     protected static ?string $recordTitleAttribute = 'nama';
 
-    protected static ?string $modelLabel = 'Rukun Tetangga';
+    protected static ?string $modelLabel = 'Daftar Kelurahan';
 
-    protected static ?string $pluralModelLabel = 'Rukun Tetangga';
+    protected static ?string $pluralModelLabel = 'Daftar Kelurahan';
 
     public static function form(Form $form): Form
     {
@@ -38,8 +38,15 @@ class RukunTetanggasRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama')
-                    ->searchable(),
+                    ->label('Kelurahan')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\BadgeColumn::make('pemungutan_suaras_count')
+                    ->sortable()
+                    ->color('success')
+                    ->label('TPS')
+                    ->counts('pemungutan_suaras'),
 
                 Tables\Columns\BadgeColumn::make('relawans_count')
                     ->sortable()
@@ -52,11 +59,6 @@ class RukunTetanggasRelationManager extends RelationManager
                     ->color('danger')
                     ->label('Calon Pemilih')
                     ->counts('calon_pemilihs'),
-
-                Tables\Columns\BadgeColumn::make('target_pemilih')
-                    ->label('Target Pemilih')
-                    ->color('secondary')
-                    ->sortable(),
             ])
             ->defaultSort('nama', 'ASC')
             ->filters([
@@ -76,19 +78,17 @@ class RukunTetanggasRelationManager extends RelationManager
 
     protected function getTableRecordUrlUsing(): ?Closure
     {
-        return fn (RukunTetangga $record): string => route('filament.resources.rukun-tetanggas.edit', $record);
+        return fn (Kelurahan $record): string => route('filament.resources.kelurahans.edit', $record);
     }
 
     protected function getTableHeaderActions(): array
     {
         return [
             FilamentExportHeaderAction::make('Export')
+                ->button()
+                ->outlined()
                 ->disableAdditionalColumns()
-                ->disableFilterColumns()
-                ->withColumns([
-                    Tables\Columns\TextColumn::make('kelurahan.nama')->label('Kelurahan'),
-                    Tables\Columns\TextColumn::make('kecamatan.nama')->label('Kecamatan'),
-                ]),
+                ->disableFilterColumns(),
         ];
     }
 }

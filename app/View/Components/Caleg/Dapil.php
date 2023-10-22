@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Caleg;
 
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -9,11 +10,17 @@ use Illuminate\View\Component;
 
 class Dapil extends Component
 {
-    public $data;
+    public $data, $kabupatens;
 
     public function __construct()
     {
-        $this->data = Kecamatan::with('rukun_tetanggas', 'daftar_pemilihs', 'calon_pemilihs')
+        $kabupatenId = [7103, 7104, 7109];
+        $this->data = Kecamatan::with('kelurahans', 'daftar_pemilihs', 'calon_pemilihs')
+            ->orderByRaw('CASE WHEN kabupaten_id = ' . $kabupatenId[0] . ' THEN 0
+                       WHEN kabupaten_id = ' . $kabupatenId[1] . ' THEN 1
+                       WHEN kabupaten_id = ' . $kabupatenId[2] . ' THEN 2
+                       ELSE 3
+                  END')
             ->orderBy('nama')
             ->get();
     }
@@ -24,7 +31,7 @@ class Dapil extends Component
     public function render(): View|Closure|string
     {
         return view('components.caleg.dapil', [
-            'data' => $this->data
+            'data' => $this->data,
         ]);
     }
 }

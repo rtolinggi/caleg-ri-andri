@@ -26,7 +26,7 @@ class PemilihList extends Component
         }
 
         return view('livewire.caleg.pemilih-list', [
-            'pemilihs' => $pemilihs->orderBy('nama')->get(),
+            'pemilihs' => $pemilihs->orderBy('updated_at')->limit(100)->get(),
         ]);
     }
 }

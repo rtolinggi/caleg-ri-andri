@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('no_hp')->nullable();
             $table->unsignedSmallInteger('umur')->nullable();
             $table->enum('jenis_kelamin', ['PRIA', 'WANITA'])->nullable();
+            $table->string('pekerjaan')->nullable();
             $table->string('file_identitas')->nullable();
             $table->boolean('is_calon')->default(false);
             $table->foreignId('relawan_id')->nullable();
             $table->foreignId('pemungutan_suara_id')->nullable();
-            $table->foreignId('rukun_tetangga_id')->nullable();
             $table->foreignId('kelurahan_id')->nullable();
             $table->foreignId('kecamatan_id')->nullable();
+            $table->foreignId('kabupaten_id')->nullable();
             $table->timestamps();
         });
     }

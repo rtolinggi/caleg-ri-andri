@@ -66,7 +66,38 @@
         @enderror
     </div>
 
+    <div class="mb-6">
+        <label for="selectedPekerjaan" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+            Pekerjaan
+        </label>
+        <select wire:model="selectedPekerjaan"
+            class="focus:border-utama focus:ring-utama dark:focus:border-utama dark:focus:ring-utama block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
+            <option value="" selected>Pilih Pekerjaan</option>
+            @foreach ($this->pekerjaanOptions as $key => $pekerjaan)
+                <option value="{{ $key }}">{{ $pekerjaan }}</option>
+            @endforeach
+        </select>
+        @error('selectedPekerjaan')
+            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+        @enderror
+    </div>
+
     <h1 class="mb-3 text-2xl font-semibold">2. Area Pemilih</h1>
+    <div class="mb-6">
+        <label for="selectedKabupaten" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+            Kabupaten
+        </label>
+        <select wire:model="selectedKabupaten"
+            class="focus:border-utama focus:ring-utama dark:focus:border-utama dark:focus:ring-utama block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
+            <option value="" selected>Pilih Kabupaten</option>
+            @foreach ($kabupatens as $kabupaten)
+                <option value="{{ $kabupaten->id }}">{{ $kabupaten->nama }}</option>
+            @endforeach
+        </select>
+        @error('selectedKabupaten')
+            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+        @enderror
+    </div>
     <div class="mb-6">
         <label for="selectedKecamatan" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Kecamatan
@@ -74,7 +105,7 @@
         <select wire:model="selectedKecamatan"
             class="focus:border-utama focus:ring-utama dark:focus:border-utama dark:focus:ring-utama block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
             <option value="" selected>Pilih Kecamatan</option>
-            @foreach ($kecamatans as $kecamatan)
+            @foreach ($kecamatanOptions as $kecamatan)
                 <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}</option>
             @endforeach
         </select>
@@ -94,21 +125,6 @@
             @endforeach
         </select>
         @error('selectedKelurahan')
-            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
-    </div>
-    <div class="mb-6">
-        <label for="selectedRT" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-            Rukun Tetangga (RT)
-        </label>
-        <select wire:model="selectedRT"
-            class="focus:border-utama focus:ring-utama dark:focus:border-utama dark:focus:ring-utama block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
-            <option value="" selected>Pilih RT</option>
-            @foreach ($rtOptions as $rt)
-                <option value="{{ $rt->id }}">{{ $rt->nama }}</option>
-            @endforeach
-        </select>
-        @error('selectedRT')
             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
         @enderror
     </div>

@@ -11,6 +11,11 @@ class Relawan extends Model
 
     protected $guarded = [];
 
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class);
+    }
+
     public function kecamatan()
     {
         return $this->belongsTo(Kecamatan::class);
@@ -19,16 +24,6 @@ class Relawan extends Model
     public function kelurahan()
     {
         return $this->belongsTo(Kelurahan::class);
-    }
-
-    public function rukun_tetangga()
-    {
-        return $this->belongsTo(RukunTetangga::class);
-    }
-
-    public function rukunTetangga()
-    {
-        return $this->belongsTo(RukunTetangga::class);
     }
 
     public function daftar_pemilihs()

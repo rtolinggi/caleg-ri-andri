@@ -20,9 +20,22 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
         ]);
 
-        $this->call([SettingSeeder::class]);
-        $this->call([RiwayatHidupSeeder::class]);
-        $this->call([MediaSeeder::class]);
+        // $this->call([
+        //     SettingSeeder::class,
+        //     RiwayatHidupSeeder::class,
+        //     MediaSeeder::class,
+        //     KabupatenSeeder::class,
+        //     KecamatanSeeder::class,
+        //     KelurahanSeeder::class,
+        // ]);
+
+        $this->call(SettingSeeder::class);
+        $this->call(RiwayatHidupSeeder::class);
+        $this->call(MediaSeeder::class);
+        $this->call(KabupatenSeeder::class);
+        $this->call(KecamatanSeeder::class);
+        $this->call(KelurahanSeeder::class);
+
         // $this->call([KecamatanSeeder::class]);
         // $this->call([KelurahanSeeder::class]);
     }

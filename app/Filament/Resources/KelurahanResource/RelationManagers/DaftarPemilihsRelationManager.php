@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\RukunTetanggaResource\RelationManagers;
+namespace App\Filament\Resources\KelurahanResource\RelationManagers;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Models\DaftarPemilih;
@@ -96,9 +96,9 @@ class DaftarPemilihsRelationManager extends RelationManager
                 ->disableAdditionalColumns()
                 ->disableFilterColumns()
                 ->withColumns([
-                    Tables\Columns\TextColumn::make('rukun_tetangga.nama')->label('RT'),
                     Tables\Columns\TextColumn::make('kelurahan.nama')->label('Kelurahan'),
                     Tables\Columns\TextColumn::make('kecamatan.nama')->label('Kecamatan'),
+                    Tables\Columns\TextColumn::make('kabupaten.nama')->label('Kabupaten'),
                 ]),
         ];
     }

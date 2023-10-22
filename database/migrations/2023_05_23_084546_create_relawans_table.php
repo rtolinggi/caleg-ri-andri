@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('nik');
             $table->string('nama');
             $table->string('phone');
-            $table->enum('jenjang', ['KECAMATAN', 'KELURAHAN', 'RT']);
+            $table->enum('jenjang', ['KABUPATEN', 'KECAMATAN', 'KELURAHAN']);
             $table->enum('tipe', ['Inti', 'Tambahan']);
             $table->string('file_identitas')->nullable();
-            $table->foreignId('rukun_tetangga_id')->nullable();
             $table->foreignId('kelurahan_id')->nullable();
             $table->foreignId('kecamatan_id')->nullable();
+            $table->foreignId('kabupaten_id')->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\DaftarPemilih;
+use App\Models\Kelurahan;
 use App\Models\RukunTetangga;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
@@ -33,7 +34,7 @@ class PresentaseTargetChart extends ApexChartWidget
     protected function getOptions(): array
     {
         $value = DaftarPemilih::where('is_calon', true)->count();
-        $total = RukunTetangga::sum('target_pemilih');
+        $total = Kelurahan::sum('target_pemilih');
 
         $persen = persen($value, $total);
 

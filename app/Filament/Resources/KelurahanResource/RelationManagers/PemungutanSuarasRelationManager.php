@@ -81,6 +81,7 @@ class PemungutanSuarasRelationManager extends RelationManager
                 ->withColumns([
                     Tables\Columns\TextColumn::make('kelurahan.nama')->label('Kelurahan'),
                     Tables\Columns\TextColumn::make('kecamatan.nama')->label('Kecamatan'),
+                    Tables\Columns\TextColumn::make('kabupaten.nama')->label('Kabupaten'),
                 ]),
         ];
     }

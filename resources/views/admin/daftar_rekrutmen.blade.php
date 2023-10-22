@@ -53,6 +53,11 @@
                     <td>{{ $relawan->tipe }}</td>
                 </tr>
                 <tr>
+                    <td>Kabupaten</td>
+                    <td width="2%">:</td>
+                    <td>{{ $relawan->kabupaten->nama ?? '' }}</td>
+                </tr>
+                <tr>
                     <td>Kecamatan</td>
                     <td width="2%">:</td>
                     <td>{{ $relawan->kecamatan->nama ?? '' }}</td>
@@ -61,11 +66,6 @@
                     <td>Kelurahan</td>
                     <td width="2%">:</td>
                     <td>{{ $relawan->kelurahan->nama ?? '' }}</td>
-                </tr>
-                <tr>
-                    <td>Rukun Tetangga</td>
-                    <td width="2%">:</td>
-                    <td>{{ $relawan->rukun_tetangga->nama ?? '' }}</td>
                 </tr>
                 <tr>
                     <td>Jumlah Rekrutmen</td>

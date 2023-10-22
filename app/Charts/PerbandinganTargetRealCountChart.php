@@ -2,8 +2,8 @@
 
 namespace App\Charts;
 
+use App\Models\Kelurahan;
 use App\Models\PemungutanSuara;
-use App\Models\RukunTetangga;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class PerbandinganTargetRealCountChart
@@ -21,7 +21,7 @@ class PerbandinganTargetRealCountChart
             ->setTitle('Perbandingan Pemilih')
             ->addData([
                 PemungutanSuara::sum('jumlah_suara'),
-                RukunTetangga::sum('target_pemilih'),
+                Kelurahan::sum('target_pemilih'),
             ])
             ->setLabels(['Real Count', 'Target'])
             ->setColors(['#f59e0b', '#14b8a6']);

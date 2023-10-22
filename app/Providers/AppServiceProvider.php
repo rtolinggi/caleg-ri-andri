@@ -24,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $brandName = Setting::where('key', 'Title_Website')->first()->value;
-        $brandLogo = 'storage/' . Media::where('title', 'Logo Web')->first()->image;
-        config(['filament.brand' => $brandName]);
-        config(['filament.favicon' => $brandLogo]);
+        // $brandName = Setting::where('key', 'Title_Website')->first()->value;
+        // $brandLogo = 'storage/' . Media::where('title', 'Logo Web')->first()->image;
+        // config(['filament.brand' => $brandName]);
+        // config(['filament.favicon' => $brandLogo]);
 
         Filament::serving(function () {
             // Using Vite

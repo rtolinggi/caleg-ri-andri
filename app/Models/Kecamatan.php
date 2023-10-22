@@ -11,14 +11,14 @@ class Kecamatan extends Model
 
     protected $guarded = [];
 
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class);
+    }
+
     public function kelurahans()
     {
         return $this->hasMany(Kelurahan::class);
-    }
-
-    public function rukun_tetanggas()
-    {
-        return $this->hasMany(RukunTetangga::class);
     }
 
     public function pemungutan_suaras()
@@ -38,6 +38,7 @@ class Kecamatan extends Model
 
     public function calon_pemilihs()
     {
-        return $this->hasMany(DaftarPemilih::class)->where('is_calon', true);
+        return $this->hasMany(DaftarPemilih::class)
+            ->where('is_calon', true);
     }
 }

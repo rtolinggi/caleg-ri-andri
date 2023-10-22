@@ -7,6 +7,7 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\DaftarPemilihResource\Pages;
 use App\Filament\Resources\DaftarPemilihResource\RelationManagers;
 use App\Models\DaftarPemilih;
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\PemungutanSuara;
 use App\Models\Relawan;
@@ -96,12 +97,27 @@ class DaftarPemilihResource extends Resource
                                             ->offIcon('heroicon-s-x-circle')
                                             ->offColor('secondary'),
                                     ]),
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('file_identitas')
+                                            ->label('File Identitas')
+                                            ->image()
+                                            ->enableDownload()
+                                            ->maxSize(1024),
+                                        Forms\Components\Select::make('pekerjaan')
+                                            ->label('Pekerjaan')
+                                            ->options([
+                                                'PEDAGANG' => 'Pedagang',
+                                                'NELAYAN' => 'Nelayan',
+                                                'PNS' => 'Pegawai Negeri Sipil (PNS)',
+                                                'BUMN/BUMD' => 'BUMN / BUMD',
+                                                'SWASTA' => 'Swasta',
+                                                'IRT' => 'Ibu Rumah Tangga',
+                                                'LAIN-LAIN' => 'Lain-Lain',
+                                            ]),
+                                    ])
 
-                                Forms\Components\FileUpload::make('file_identitas')
-                                    ->label('File Identitas')
-                                    ->image()
-                                    ->enableDownload()
-                                    ->maxSize(1024),
+
                             ]),
 
                         Forms\Components\Section::make('Area/Wilayah')
@@ -109,9 +125,26 @@ class DaftarPemilihResource extends Resource
                             ->compact()
                             ->columnSpan(5)
                             ->schema([
+                                Forms\Components\Select::make('kabupaten_id')
+                                    ->label('Kabupaten')
+                                    ->relationship('kabupaten', 'nama')
+                                    ->reactive()
+                                    ->searchable()
+                                    ->preload()
+                                    ->afterStateUpdated(fn (Closure $set) => $set('kecamatan_id', null))
+                                    ->required(),
+
                                 Forms\Components\Select::make('kecamatan_id')
                                     ->label('Kecamatan')
-                                    ->relationship('kecamatan', 'nama')
+                                    ->options(function (Closure $get) {
+                                        if ($get('kabupaten_id')) {
+                                            return Kabupaten::find($get('kabupaten_id'))->kecamatans->pluck('nama', 'id');
+                                        }
+
+                                        return null;
+                                    })
+                                    ->searchable()
+                                    ->preload()
                                     ->reactive()
                                     ->afterStateUpdated(fn (Closure $set) => $set('kelurahan_id', null))
                                     ->required(),
@@ -125,23 +158,9 @@ class DaftarPemilihResource extends Resource
 
                                         return null;
                                     })
-                                    ->reactive()
-                                    ->afterStateUpdated(fn (Closure $set) => $set('rukun_tetangga_id', null))
                                     ->searchable()
-                                    ->preload(),
-
-                                Forms\Components\Select::make('rukun_tetangga_id')
-                                    ->label('Rukun Tetangga')
-                                    ->options(function (Closure $get) {
-                                        if ($get('kelurahan_id')) {
-                                            return RukunTetangga::where('kelurahan_id', $get('kelurahan_id'))
-                                                ->pluck('nama', 'id')->toArray();
-                                        }
-
-                                        return null;
-                                    })
-                                    ->searchable()
-                                    ->preload(),
+                                    ->preload()
+                                    ->required(),
 
                                 Forms\Components\Select::make('pemungutan_suara_id')
                                     ->label('TPS')
@@ -160,13 +179,14 @@ class DaftarPemilihResource extends Resource
                                     ->label('Relawan')
                                     ->options(function (callable $get) {
                                         if ($get('kecamatan_id')) {
-                                            return Relawan::where('kecamatan_id', ($get('kecamatan_id')))
+                                            return Relawan::where('kabupaten_id', ($get('kabupaten_id')))
                                                 ->pluck('nama', 'id');
                                         }
 
                                         return null;
                                     })
                                     ->searchable()
+                                    ->required()
                                     ->preload(),
                             ]),
                     ]),

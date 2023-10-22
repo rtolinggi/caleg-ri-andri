@@ -2,26 +2,27 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KecamatanResource\Pages;
-use App\Filament\Resources\KecamatanResource\RelationManagers;
-use App\Models\Kecamatan;
+use App\Filament\Resources\KabupatenResource\Pages;
+use App\Filament\Resources\KabupatenResource\RelationManagers;
+use App\Models\Kabupaten;
 use Filament\Forms;
 use Filament\Resources\Form;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KecamatanResource extends Resource
+class KabupatenResource extends Resource
 {
-    protected static ?string $model = Kecamatan::class;
+    protected static ?string $model = Kabupaten::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
 
-    protected static ?string $modelLabel = 'Kecamatan';
+    protected static ?string $modelLabel = 'Kabupaten';
 
-    protected static ?string $pluralModelLabel = 'Kecamatan';
+    protected static ?string $pluralModelLabel = 'Kabupaten';
 
     // protected static ?string $navigationGroup = 'Utama';
 
@@ -42,17 +43,11 @@ class KecamatanResource extends Resource
                     ->collapsible()
                     ->compact()
                     ->schema([
-                        Forms\Components\Select::make('kabupaten_id')
-                            ->label('Nama Kabupaten')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('kabupaten', 'nama')
-                            ->required(),
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama')
                             ->required()
                             ->maxLength(255),
-                    ])->columns(2)
+                    ])
             ]);
     }
 
@@ -64,9 +59,15 @@ class KecamatanResource extends Resource
                     ->searchable()
                     ->label('Nama'),
 
-                Tables\Columns\BadgeColumn::make('kelurahans_count')
+                Tables\Columns\BadgeColumn::make('kecamatans_count')
                     ->sortable()
                     ->color('primary')
+                    ->label('Kecamatan')
+                    ->counts('kecamatans'),
+
+                Tables\Columns\BadgeColumn::make('kelurahans_count')
+                    ->sortable()
+                    ->color('success')
                     ->label('Kelurahan')
                     ->counts('kelurahans'),
 
@@ -103,15 +104,16 @@ class KecamatanResource extends Resource
     {
         return [
             RelationManagers\KelurahansRelationManager::class,
+            RelationManagers\KecamatansRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKecamatans::route('/'),
-            'create' => Pages\CreateKecamatan::route('/create'),
-            'edit' => Pages\EditKecamatan::route('/{record}/edit'),
+            'index' => Pages\ListKabupatens::route('/'),
+            'create' => Pages\CreateKabupaten::route('/create'),
+            'edit' => Pages\EditKabupaten::route('/{record}/edit'),
         ];
     }
 }

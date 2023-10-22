@@ -22,7 +22,7 @@ class RelawanList extends Component
         }
 
         return view('livewire.caleg.relawan-list', [
-            'relawans' => $relawans->orderBy('nama')->get(),
+            'relawans' => $relawans->orderBy('created_at')->limit(100)->get(),
         ]);
     }
 }

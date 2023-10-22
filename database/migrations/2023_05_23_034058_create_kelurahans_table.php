@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('kelurahans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('kabupaten_id');
             $table->foreignId('kecamatan_id');
             $table->string('nama');
+            $table->unsignedInteger('target_pemilih');
             $table->timestamps();
         });
     }

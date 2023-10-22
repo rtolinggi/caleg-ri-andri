@@ -5,20 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RukunTetangga extends Model
+class Kabupaten extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function kecamatan()
+    public function kecamatans()
     {
-        return $this->belongsTo(Kecamatan::class);
+        return $this->hasMany(Kecamatan::class);
     }
 
-    public function kelurahan()
+    public function kelurahans()
     {
-        return $this->belongsTo(Kelurahan::class);
+        return $this->hasMany(Kelurahan::class);
+    }
+
+    public function pemungutan_suaras()
+    {
+        return $this->hasMany(PemungutanSuara::class);
     }
 
     public function relawans()
@@ -33,7 +38,6 @@ class RukunTetangga extends Model
 
     public function calon_pemilihs()
     {
-        return $this->hasMany(DaftarPemilih::class)
-            ->where('is_calon', true);
+        return $this->hasMany(DaftarPemilih::class)->where('is_calon', true);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Relawan;
 
 use App\Models\DaftarPemilih;
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Relawan;
@@ -14,12 +15,21 @@ class CreatePemilih extends Component
 {
     use WithFileUploads;
 
-    public $selectedKecamatan, $selectedKelurahan, $selectedRT, $selectedRelawan;
+    public $selectedKabupaten, $selectedKecamatan, $selectedKelurahan, $selectedRelawan, $selectedPekerjaan;
+    public $kecamatanOptions = [];
+    public $pekerjaanOptions = [
+        'PEDAGANG' => 'Pedagang',
+        'NELAYAN' => 'Nelayan',
+        'PNS' => 'Pegawai Negeri Sipil (PNS)',
+        'BUMN/BUMD' => 'BUMN / BUMD',
+        'SWASTA' => 'Swasta',
+        'IRT' => 'Ibu Rumah Tangga',
+        'LAIN-LAIN' => 'Lain-Lain',
+    ];
     public $kelurahanOptions = [];
-    public $rtOptions = [];
     public $relawanOptions = [];
 
-    public $nik, $nama, $umur, $jenis_kelamin, $no_hp;
+    public $nik, $nama, $pekerjaan, $umur, $jenis_kelamin, $no_hp;
     public $file_identitas;
 
     protected $rules = [
@@ -30,9 +40,10 @@ class CreatePemilih extends Component
         'no_hp'             => 'required',
         'file_identitas'    => 'required|image',
         'selectedRelawan'   => 'required',
-        'selectedRT'        => 'required',
         'selectedKelurahan' => 'required',
         'selectedKecamatan' => 'required',
+        'selectedKabupaten' => 'required',
+        'selectedPekerjaan' => 'required',
     ];
 
     protected $messages = [
@@ -47,16 +58,24 @@ class CreatePemilih extends Component
         'file_identitas.required'    => 'File identitas tidak boleh kosong.',
         'file_identitas.image'       => 'File identitas harus berupa gambar.',
         'selectedRelawan.required'   => 'Relawan tidak boleh kosong.',
-        'selectedRT.required'        => 'RT tidak boleh kosong.',
         'selectedKelurahan.required' => 'Kelurahan tidak boleh kosong.',
         'selectedKecamatan.required' => 'Kecamatan tidak boleh kosong.',
+        'selectedKabupaten.required' => 'Kabupaten tidak boleh kosong.',
+        'selectedPekerjaan.required' => 'Pekerjaan tidak boleh kosong.',
     ];
 
     public function render()
     {
         return view('livewire.relawan.create-pemilih', [
-            'kecamatans' => Kecamatan::orderBy('nama')->get()
+            'kabupatens' => Kabupaten::orderBy('nama')->get(),
         ]);
+    }
+
+    public function updatedSelectedKabupaten()
+    {
+        $this->kecamatanOptions = Kecamatan::where('kabupaten_id', $this->selectedKabupaten)
+            ->orderBy('nama')
+            ->get();
     }
 
     public function updatedSelectedKecamatan()
@@ -64,15 +83,11 @@ class CreatePemilih extends Component
         $this->kelurahanOptions = Kelurahan::where('kecamatan_id', $this->selectedKecamatan)
             ->orderBy('nama')
             ->get();
-
-        $this->relawanOptions = Relawan::where('kecamatan_id', $this->selectedKecamatan)
-            ->orderBy('nama')
-            ->get();
     }
 
     public function updatedSelectedKelurahan()
     {
-        $this->rtOptions = RukunTetangga::where('kelurahan_id', $this->selectedKelurahan)
+        $this->relawanOptions = Relawan::where('kabupaten_id', $this->selectedKabupaten)
             ->orderBy('nama')
             ->get();
     }
@@ -87,13 +102,14 @@ class CreatePemilih extends Component
             'umur'                => $this->umur,
             'jenis_kelamin'       => $this->jenis_kelamin,
             'no_hp'               => $this->no_hp,
+            'pekerjaan'           => $this->selectedPekerjaan,
             'file_identitas'      => $this->file_identitas->store('daftar_pemilih'),
             'is_calon'            => false,
             'relawan_id'          => $this->selectedRelawan,
             'pemungutan_suara_id' => null,
-            'rukun_tetangga_id'   => $this->selectedRT,
             'kelurahan_id'        => $this->selectedKelurahan,
             'kecamatan_id'        => $this->selectedKecamatan,
+            'kabupaten_id'        => $this->selectedKabupaten,
         ]);
 
         return redirect()->route('relawan.success');

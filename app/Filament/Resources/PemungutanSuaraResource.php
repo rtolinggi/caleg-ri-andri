@@ -6,6 +6,7 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\PemungutanSuaraResource\Pages;
 use App\Filament\Resources\PemungutanSuaraResource\RelationManagers;
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\PemungutanSuara;
 use Closure;
@@ -84,11 +85,26 @@ class PemungutanSuaraResource extends Resource
                             ->compact()
                             ->columnSpan(5)
                             ->schema([
+                                Forms\Components\Select::make('kabupaten_id')
+                                    ->label('Kabupaten')
+                                    ->relationship('kabupaten', 'nama')
+                                    ->reactive()
+                                    ->searchable()
+                                    ->preload()
+                                    ->afterStateUpdated(fn (Closure $set) => $set('kecamatan_id', null))
+                                    ->required(),
 
                                 Forms\Components\Select::make('kecamatan_id')
                                     ->label('Kecamatan')
-                                    ->relationship('kecamatan', 'nama')
-                                    ->reactive()
+                                    ->options(function (Closure $get) {
+                                        if ($get('kabupaten_id')) {
+                                            return Kabupaten::find($get('kabupaten_id'))->kecamatans->pluck('nama', 'id');
+                                        }
+
+                                        return null;
+                                    })
+                                    ->searchable()
+                                    ->preload()
                                     ->afterStateUpdated(fn (Closure $set) => $set('kelurahan_id', null))
                                     ->required(),
 
@@ -117,11 +133,14 @@ class PemungutanSuaraResource extends Resource
                     ->label('Nama')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('kelurahan.nama')
-                    ->label('Kelurahan'),
+                Tables\Columns\TextColumn::make('kabupaten.nama')
+                    ->label('Kabupaten'),
 
                 Tables\Columns\TextColumn::make('kecamatan.nama')
                     ->label('Kecamatan'),
+
+                Tables\Columns\TextColumn::make('kelurahan.nama')
+                    ->label('Kelurahan'),
 
                 Tables\Columns\BadgeColumn::make('calon_pemilihs_count')
                     ->sortable()
@@ -157,8 +176,8 @@ class PemungutanSuaraResource extends Resource
                 // FilamentExportHeaderAction::make('export'),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
-                // FilamentExportBulkAction::make('export'),
+                Tables\Actions\DeleteBulkAction::make(),
+                FilamentExportBulkAction::make('export'),
             ]);
     }
 

@@ -11,19 +11,14 @@ class Kelurahan extends Model
 
     protected $guarded = [];
 
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class);
+    }
+
     public function kecamatan()
     {
         return $this->belongsTo(Kecamatan::class);
-    }
-
-    public function rukun_tetanggas()
-    {
-        return $this->hasMany(RukunTetangga::class);
-    }
-
-    public function pemungutan_suaras()
-    {
-        return $this->hasMany(PemungutanSuara::class);
     }
 
     public function relawans()
@@ -40,5 +35,10 @@ class Kelurahan extends Model
     {
         return $this->hasMany(DaftarPemilih::class)
             ->where('is_calon', true);
+    }
+
+    public function pemungutan_suaras()
+    {
+        return $this->hasMany(PemungutanSuara::class);
     }
 }

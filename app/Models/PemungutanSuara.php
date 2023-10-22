@@ -15,6 +15,11 @@ class PemungutanSuara extends Model
         'is_lock' => 'boolean',
     ];
 
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class);
+    }
+
     public function kecamatan()
     {
         return $this->belongsTo(Kecamatan::class);
@@ -23,11 +28,6 @@ class PemungutanSuara extends Model
     public function kelurahan()
     {
         return $this->belongsTo(Kelurahan::class);
-    }
-
-    public function rukun_tetangga()
-    {
-        return $this->belongsTo(RukunTetangga::class);
     }
 
     public function daftar_pemilihs()

@@ -15,6 +15,11 @@ class DaftarPemilih extends Model
         'is_calon' => 'boolean',
     ];
 
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class);
+    }
+
     public function kecamatan()
     {
         return $this->belongsTo(Kecamatan::class);
@@ -23,16 +28,6 @@ class DaftarPemilih extends Model
     public function kelurahan()
     {
         return $this->belongsTo(Kelurahan::class);
-    }
-
-    public function rukun_tetangga()
-    {
-        return $this->belongsTo(RukunTetangga::class);
-    }
-
-    public function rukunTetangga()
-    {
-        return $this->belongsTo(RukunTetangga::class);
     }
 
     public function relawan()

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\KecamatanResource\RelationManagers;
+namespace App\Filament\Resources\KabupatenResource\RelationManagers;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
-use App\Models\Kelurahan;
+use App\Models\Kecamatan;
 use Closure;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -13,15 +13,15 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KelurahansRelationManager extends RelationManager
+class KecamatansRelationManager extends RelationManager
 {
-    protected static string $relationship = 'kelurahans';
+    protected static string $relationship = 'kecamatans';
 
     protected static ?string $recordTitleAttribute = 'nama';
 
-    protected static ?string $modelLabel = 'Daftar Kelurahan';
+    protected static ?string $modelLabel = 'Daftar Kecamatan';
 
-    protected static ?string $pluralModelLabel = 'Daftar Kelurahan';
+    protected static ?string $pluralModelLabel = 'Daftar Kecamatan';
 
     public static function form(Form $form): Form
     {
@@ -38,9 +38,15 @@ class KelurahansRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Kelurahan')
+                    ->label('Kecamatan')
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\BadgeColumn::make('kelurahans_count')
+                    ->sortable()
+                    ->color('primary')
+                    ->label('Kelurahan')
+                    ->counts('kelurahans'),
 
                 Tables\Columns\BadgeColumn::make('pemungutan_suaras_count')
                     ->sortable()
@@ -78,13 +84,15 @@ class KelurahansRelationManager extends RelationManager
 
     protected function getTableRecordUrlUsing(): ?Closure
     {
-        return fn (Kelurahan $record): string => route('filament.resources.kelurahans.edit', $record);
+        return fn (Kecamatan $record): string => route('filament.resources.kecamatans.edit', $record);
     }
 
     protected function getTableHeaderActions(): array
     {
         return [
             FilamentExportHeaderAction::make('Export')
+                ->button()
+                ->outlined()
                 ->disableAdditionalColumns()
                 ->disableFilterColumns(),
         ];

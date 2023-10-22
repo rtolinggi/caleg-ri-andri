@@ -12,7 +12,7 @@ class AdminController extends Controller
     public function formulir()
     {
         $dataForm = [
-            'NIK', 'Nama', 'Umur', 'Jenis Kelamin', 'No. Handphone', 'Kecamatan', 'Kelurahan', 'RT', 'Nama Relawan'
+            'NIK', 'Nama', 'Umur', 'Jenis Kelamin', 'No. Handphone', 'Kabupaten', 'Kecamatan', 'Kelurahan', 'Nama Relawan'
         ];
 
         return view('admin.formulir', compact('dataForm'));

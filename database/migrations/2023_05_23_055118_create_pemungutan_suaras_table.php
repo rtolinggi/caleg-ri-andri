@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pemungutan_suaras', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('kabupaten_id');
             $table->foreignId('kecamatan_id');
             $table->foreignId('kelurahan_id');
             $table->string('nama');

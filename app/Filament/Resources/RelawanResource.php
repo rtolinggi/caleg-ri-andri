@@ -6,7 +6,9 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\RelawanResource\Pages;
 use App\Filament\Resources\RelawanResource\RelationManagers;
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\Relawan;
 use App\Models\RukunTetangga;
 use Closure;
@@ -69,9 +71,9 @@ class RelawanResource extends Resource
                                             ->label('Jenjang Relawan')
                                             ->required()
                                             ->options([
+                                                'KABUPATEN' => 'KABUPATEN',
                                                 'KECAMATAN' => 'KECAMATAN',
                                                 'KELURAHAN' => 'KELURAHAN',
-                                                'RT' => 'RT'
                                             ]),
 
                                         Forms\Components\Radio::make('tipe')
@@ -100,31 +102,33 @@ class RelawanResource extends Resource
                             ->compact()
                             ->columnSpan(5)
                             ->schema([
+                                Forms\Components\Select::make('kabupaten_id')
+                                    ->label('Kabupaten')
+                                    ->relationship('kabupaten', 'nama')
+                                    ->reactive()
+                                    ->searchable()
+                                    ->preload()
+                                    ->afterStateUpdated(fn (Closure $set) => $set('kecamatan_id', null))
+                                    ->required(),
+
                                 Forms\Components\Select::make('kecamatan_id')
                                     ->label('Kecamatan')
-                                    ->relationship('kecamatan', 'nama')
-                                    ->reactive()
-                                    ->afterStateUpdated(fn (Closure $set) => $set('kelurahan_id', null))
-                                    ->required(),
+                                    ->options(function (Closure $get) {
+                                        if ($get('kabupaten_id')) {
+                                            return Kabupaten::find($get('kabupaten_id'))->kecamatans->pluck('nama', 'id');
+                                        }
+
+                                        return null;
+                                    })
+                                    ->searchable()
+                                    ->preload()
+                                    ->afterStateUpdated(fn (Closure $set) => $set('kelurahan_id', null)),
 
                                 Forms\Components\Select::make('kelurahan_id')
                                     ->label('Kelurahan')
                                     ->options(function (Closure $get) {
                                         if ($get('kecamatan_id')) {
                                             return Kecamatan::find($get('kecamatan_id'))->kelurahans->pluck('nama', 'id');
-                                        }
-
-                                        return null;
-                                    })
-                                    ->searchable()
-                                    ->preload(),
-
-                                Forms\Components\Select::make('rukun_tetangga_id')
-                                    ->label('Rukun Tetangga')
-                                    ->options(function (Closure $get) {
-                                        if ($get('kelurahan_id')) {
-                                            return RukunTetangga::where('kelurahan_id', $get('kelurahan_id'))
-                                                ->pluck('nama', 'id')->toArray();
                                         }
 
                                         return null;
@@ -181,9 +185,9 @@ class RelawanResource extends Resource
                 Tables\Filters\SelectFilter::make('jenjang')
                     ->label('Jenjang')
                     ->options([
+                        'KABUPATEN' => 'KABUPATEN',
                         'KECAMATAN' => 'KECAMATAN',
                         'KELURAHAN' => 'KELURAHAN',
-                        'RT' => 'RT',
                     ]),
 
                 Tables\Filters\SelectFilter::make('tipe')
