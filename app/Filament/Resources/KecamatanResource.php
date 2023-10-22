@@ -89,7 +89,9 @@ class KecamatanResource extends Resource
             ])
             ->defaultSort('nama', 'ASC')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('kabupaten_id')
+                    ->label('Kabupaten')
+                    ->relationship('kabupaten', 'nama'),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
