@@ -201,7 +201,7 @@ class DaftarPemilihResource extends Resource
                     ->wrap()
                     ->label('NIK')
                     ->copyable()
-                    ->copyMessage('NIK copied')
+                    ->copyMessage('NIK berhasil di copy')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('nama')
@@ -229,13 +229,13 @@ class DaftarPemilihResource extends Resource
 
                 // Tables\Columns\TextColumn::make('umur'),
 
-                Tables\Columns\IconColumn::make('is_calon')
-                    ->label('Calon Pemilih')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->trueColor('warning')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->falseColor('primary'),
+                Tables\Columns\ToggleColumn::make('is_calon')
+                    ->label('Calon Pemilih'),
+                // ->boolean()
+                // ->trueIcon('heroicon-o-check-circle')
+                // ->trueColor('warning')
+                // ->falseIcon('heroicon-o-x-circle')
+                // ->falseColor('primary'),
 
                 // Tables\Columns\ToggleColumn::make('is_calon')
                 //     ->label('Calon Pemilih')
