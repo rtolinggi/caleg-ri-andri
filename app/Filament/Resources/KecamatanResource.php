@@ -86,6 +86,10 @@ class KecamatanResource extends Resource
                     ->color('danger')
                     ->label('Calon Pemilih')
                     ->counts('calon_pemilihs'),
+                Tables\Columns\BadgeColumn::make('kelurahans_sum_target_pemilih')
+                    ->color('primary')
+                    ->sum('kelurahans', 'target_pemilih')
+                    ->label('Target Pemilih'),
             ])
             ->defaultSort('nama', 'ASC')
             ->filters([

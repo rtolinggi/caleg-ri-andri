@@ -107,6 +107,9 @@ class KelurahanResource extends Resource
                     ->color('danger')
                     ->label('Calon Pemilih')
                     ->counts('calon_pemilihs'),
+                Tables\Columns\BadgeColumn::make('target_pemilih')
+                    ->color('primary')
+                    ->label('Target Pemilih'),
             ])
             ->defaultSort('kabupaten_id', 'ASC')
             ->filters([
